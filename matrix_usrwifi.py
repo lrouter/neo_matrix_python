@@ -9,7 +9,7 @@ import logging
 
 class UsrWifi:
     def __init__(self):
-        self.__ser = serial.Serial('/dev/ttyUSB0',115200, timeout=1)
+        self.__ser = serial.Serial('/dev/ttyS1',115200, timeout=1)
         self.__mode = 'AT' #wifi module modle
         self.__ackLen = 50 #ack length from wifi module
         
@@ -38,6 +38,18 @@ class UsrWifi:
         # 记录一条日志
         self.__logger.info('first message.')
 
+    ###########################
+    # Initialize wifi module
+    ###########################
+    def init(self):
+        self.setModeSta()
+        self.setTcps("192.168.199.1", "8100")
+        self.saveDefaultParas()
+        self.reset()    
+
+    ###########################
+    # Enter AT command mode
+    ###########################
     def enterAt(self):
         #first step, send '+++' to module
         self.__ser.write('+')
@@ -51,7 +63,8 @@ class UsrWifi:
         if cmp(value, 'a') != 0:
             self.exitAt()
             return False
-	#second step, send 'a' to module
+            
+        #second step, send 'a' to module
         self.__ser.write('a')
         time.sleep(0.2)
         value = self.__ser.read(self.__ackLen)
@@ -63,172 +76,70 @@ class UsrWifi:
             self.exitAt()
             return False
 
+    ###########################
+    # Exit AT command mode
+    ###########################
     def exitAt(self):
         self.__ser.write('AT+ENTM\r')
         value = self.__ser.read(self.__ackLen)
         self.__logger.info('ack from csr322 module:\r\n%s' , value)
+        
 
+
+    ###########################
+    # 设置当前参数为默认出厂参数
+    ###########################
+    def saveDefaultParas(self):
+        self.enterAt()
+    
+        self.__logger.info('Send save as default parameter command !')
+        self.__ser.write('AT+CFGTF\r')
+        value = self.__ser.read(self.__ackLen)
+        self.__logger.info('ack from csr322 module:\r\n%s' , value)
+        
+        self.exitAt()
+        
+        if value.find('OK') != -1:  
+            return True
+        else:
+            return False
+            
+    ###########################
+    # 重启
+    ###########################
     def reset(self):
+        self.enterAt()
+        
+        self.__logger.info('Send reset command !')
         self.__ser.write('AT+Z\r')
         value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from csr322 module:\r\n%s' , value)
-        self.__logger.info('reset module.')
-    
-    def resetModule(self):
-        self.enterAt()
-        self.reset()
-        time.sleep(5)
-
-    def getVersion(self):
-        self.enterAt()
-
-        self.__ser.write('AT+VER\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return 0
-        index += 4
-        ver = value[index:]
-        ver = ver.strip()    
-
-        self.exitAt()
-        return ver
-
-    #################
-    # setMode('STA')
-    # setMode('AP')
-    #################
-    def setMode(self, mode):
-        cmd = 'AT+WMODE='
-        if mode == 'STA':
-            cmd += 'STA\r'
-        elif mode == 'AP':
-            cmd += 'AP\r'
-        else:
-            return False
-
-        self.enterAt()
-        self.__ser.write(cmd)
-
-        value = self.__ser.read(self.__ackLen)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        else:
-            self.exitAt()
-            return True
-
-    def getMode(self):
-        self.enterAt()
-
-        self.__ser.write('AT+WMODE\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return 0
-        index += 4
-        mode = value[index:]
-        self.__logger.info('mode == %s' , mode)    
-
-        self.exitAt()
-
-
-    ################################
-    # When module is in 'STA' mode,
-    # set wifi name and password.
-    #
-    # ssid  -   string
-    # pwd   -   string
-    ################################
-    def setStat(self, ssid, pwd):
-        self.enterAt()
-
-        cmd = 'AT+WSTA='
-        cmd += ssid
-        cmd += ','
-        cmd += pwd
-        cmd += '\r'
-        self.__ser.write(cmd)
-
-        value = self.__ser.read(self.__ackLen)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        else:
-            self.exitAt()
-            return True
-    
-    ################################
-    #
-    #   get ap ssid and password
-    ################################
-    def getStat(self):
-        self.enterAt()
-
-        self.__ser.write('AT+WSTA\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( '5,ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        index += 4
-        stat =  value[index:]
-        wifi = stat.strip()
-        wifi = wifi.split(',')
+        self.__logger.info('ack from csr322 module:\r\n%s' , value)        
         
         self.exitAt()
-        return wifi
 
-    
-    ################################
-    # When module is in 'STA' modle, 
-    # set ip address.
-    #
-    # 
-    ################################
-    def setDhcpIp(self):
-        self.enterAt()
-
-        cmd = 'AT+WANN='
-        cmd += 'DHCP'
-        cmd += '\r'
-        self.__ser.write(cmd)
-
-        value = self.__ser.read(self.__ackLen)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        else:
-            self.exitAt()
+        if value.find('OK') != -1:  
             return True
-
-    def setStaticIp(self, ip, mask, gateway, dns):
-        self.enterAt()
-
-        cmd = 'AT+WANN='
-        cmd += 'STATIC' + ',' + ip + ',' + mask + ',' + gateway + ',' + dns + '\r'
-        self.__ser.write(cmd)
-
-        value = self.__ser.read(self.__ackLen)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
         else:
-            self.exitAt()
-            return True
+            return False
+            
+    ###########################
+    # Set Mode as STA
+    ###########################
+    def setModeSta(self):
+        self.enterAt()
+        
+        self.__logger.info('Send set sta mode command !')
+        self.__ser.write('AT+WMODE=STA\r')
+        value = self.__ser.read(self.__ackLen)
+        self.__logger.info('ack from csr322 module:\r\n%s' , value)        
+        
+        self.exitAt()
 
+        if value.find('OK') != -1:  
+            return True
+        else:
+            return False
+                        
     ###########################
     # Get wifi link status
     ###########################
@@ -240,6 +151,7 @@ class UsrWifi:
         self.__logger.info( '5,ack from csr322 module:\r\n%s' , value)
         
         self.exitAt()
+        
         index = value.find('+OK')
         if index == -1:
             return False
@@ -250,178 +162,13 @@ class UsrWifi:
         else:
             return 1
 
-    def getWap(self):
+    ###########################
+    # Set UART0 socket as TCP server:
+    # ip = "local ip"
+    # port = "8100"
+    ###########################
+    def setTcps(self, ip, port):
         self.enterAt()
-
-        self.__ser.write('AT+WAP\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( '6,ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index != -1:
-            self.exitAt()
-            return 0
-
-    #########################
-    # get wifi channel number
-    #########################
-    def getChl(self):
-        self.enterAt()
-        self.__ser.write('AT+CHANNEL\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( '6,ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return 1000
-        index += 4
-        chnl = value[index:]
-        chnl = chnl.strip()
-
-        self.exitAt()
-        return chnl
-
-    ########################
-    # get wifi ip in ap module
-    #######################
-    def getLanIp(self):
-        self.enterAt()
-
-        self.__ser.write('AT+LANN\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( '6,ack from csr322 module:\r\n%s' , value)
-        
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return '255.255.255.255'
-
-        self.exitAt()
-
-    #######################################
-    # set http client mode parameters
-    #
-    # 1,mode -    string
-    #   "POST"
-    #   "GET"
-    #
-    ######################################
-    def setHttpcMode(self, mode):
-        #step 1
-        self.__ser.write('AT+WKMOD=HTPC\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-
-        #step 2
-        if mode == 'GET':
-            self.__ser.write('AT+HTPTP=GET\r')
-        elif mode == 'POST':
-            self.__ser.write('AT+HTPTP=POST\r')
-        else:
-            return False
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-
-        return True
-
-    def setHttpcUrl(self, url):
-        cmd = 'AT+HTPURL=' + url + '?\r'
-        self.__ser.write(cmd)
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-        return True
-        
-    def setHttpcHead(self, head):
-        if head =='':
-            cmd = 'AT+HTPHEAD=Accept:text/html<<CRLF>>Accept-Language:zh-CN<<CRLF>>\r'
-        else:
-            cmd = 'AT+HTPHEAD=' + head + '\r'
-        self.__ser.write(cmd)
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-
-        return True
-
-    def setHttpcIp(self, ip, port):
-        cmd = 'AT+HTPSV=' + ip + ',' + port + '\r'
-        self.__ser.write(cmd)
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-
-        return True
-
-    def setHttpcName(self, name, port):
-        cmd = 'AT+HTPSV=' + name + ',' + port + '\r'
-        self.__ser.write(cmd)
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info( 'ack from csr322 module:\r\n%s' , value)
-        index = value.find('+OK')
-        if index == -1:
-            return False
-
-        return True
-
-    def initHttpc(self, ip, port):
-        self.enterAt()
-        self.setHttpcMode('POST')
-        self.setHttpcUrl('/')
-        self.setHttpcHead('')
-        self.setHttpcIp(ip, port)
-
-        self.reset()
-        time.sleep(2)
-
-        return True
-
-    def initTcpc(self, ip, port):
-        ret = self.enterAt()
-        if ret == False:
-            return False
-
-        self.__ser.write('AT+WKMOD=TRANS\r')
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from csr322 module:\r\n%s',value)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        
-        cmd = 'AT+SOCKA=TCPC' + ','
-        cmd += ip + ',' + port + '\r'
-        self.__logger.info( 'cmd = %s' % cmd)
-        self.__ser.write(cmd)
-        value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from csr322 module:\r\n%s',value)
-        index = value.find('+OK')
-        if index == -1:
-            self.exitAt()
-            return False
-        
-        self.reset()
-        time.sleep(2)
-
-        return True
-
-    def initTcps(self, ip, port):
-        ret = self.enterAt()
-        if ret == False:
-            return False
 
         self.__ser.write('AT+WKMOD=TRANS\r')
         value = self.__ser.read(self.__ackLen)
@@ -442,9 +189,9 @@ class UsrWifi:
             self.exitAt()
             return False
         
-        self.reset()
         time.sleep(2)
-
+        self.exitAt()
+        
         return True
 
 
@@ -477,24 +224,25 @@ class UsrWifi:
             self.__logger.info('return from remote:\r\n %s' , value)
             if value == '':
                 break
-        
-        ret = self.getTcpLink()
-        if ret == 0:
-            return False
 
         return ack
 
+    ####################################
+    # 读取TCP link状态
+    ####################################
     def getTcpLink(self):
         self.enterAt()
 
         self.__ser.write('AT+SOCKLKA\r')
         value = self.__ser.read(self.__ackLen)
         self.__logger.info('ack from csr322 module:\r\n%s' , value)
+        
+        self.exitAt()
+        
         index = value.find('+OK')
         if index == -1:
-            self.exitAt()
             return False
-        self.exitAt()
+
         index += 4
         stat = value[index:]
         self.__logger.info('tcp link stat :\r\n%s' , stat)
@@ -504,3 +252,4 @@ class UsrWifi:
             return 1
         else:
             return 2
+    

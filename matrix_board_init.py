@@ -8,15 +8,21 @@ __author__ = 'kaixi fan'
 import os
 import sys
 import time
+import matrix_logger as mlog
 
 ##############################################################
 # 				Board init function	
 ##############################################################
 def board_init():
     
+    # Creat logger
+    blog = mlog.MatrixLogger('board_init.log')
+    blog.info("board init")
+    
     ##
     ##creat gpio inode in sysfs filesystem
     ##
+    blog.info("creat gpio inode in sysfs filesystem")
     gpio_dir = '/sys/class/gpio'
     gpio_export_dir = os.path.join(gpio_dir, 'export')
     led_upload_dir = os.path.join(gpio_dir, 'gpio203')
@@ -77,6 +83,9 @@ def board_init():
 # 				Board uninit function	
 ##############################################################
 def boad_uninit():
+    
+    blog.info('board uninit')
+    
     #delet releated file inode in sysfs filesystem
     gpio_dir = '/sys/class/gpio'
     gpio_unexport_dir = os.path.join(gpio_dir, 'unexport')

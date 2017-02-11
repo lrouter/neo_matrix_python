@@ -6,37 +6,18 @@ import sys
 import time
 import serial
 import logging
+import matrix_logger as mlog
 
 class UsrWifi:
     def __init__(self):
+        # Creat log
+        self.__logger = mlog.MatrixLogger("UsrWifi.log")
+        
+        # Open serial port
+        self.__logger.info("open /dev/ttyS1 .")
         self.__ser = serial.Serial('/dev/ttyS1',115200, timeout=1)
         self.__mode = 'AT' #wifi module modle
         self.__ackLen = 50 #ack length from wifi module
-        
-        # 通过下面的方式进行简单配置输出方式与日志级别
-        # 创建一个logger
-        self.__logger = logging.getLogger('mylogger')
-        self.__logger.setLevel(logging.DEBUG)
-
-        # 创建一个handler，用于写入日志文件
-        fh = logging.FileHandler('UsrWifi.log')
-        fh.setLevel(logging.DEBUG)
-
-        # 再创建一个handler，用于输出到控制台
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
-
-        # 定义handler的输出格式
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
-
-        # 给logger添加handler
-        self.__logger.addHandler(fh)
-        self.__logger.addHandler(ch)
-
-        # 记录一条日志
-        self.__logger.info('first message.')
 
     ###########################
     # Initialize wifi module

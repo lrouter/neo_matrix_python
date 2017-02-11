@@ -9,6 +9,7 @@ import os
 import sys
 import time
 import serial
+import matrix_logger as mlog
 
 class Speaker(object):
     #private data
@@ -41,7 +42,14 @@ class Speaker(object):
                      }
                      
     def __init__(self):
-        pass
+        # Creat Log
+        self.__logger = mlog.MatrixLogger("Speaker.log")                
+        
+        # Creat serial port
+        self.__ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)  
+        if not self.__ser.isOpen():
+               self.__logger.info('self.__serial /dev/ttyS2 could not be opened.')
+               return False
 
     #######################################
     ##    Make command
@@ -59,7 +67,7 @@ class Speaker(object):
         cmd.append(cksum)
         cmd.append(0xef)
         
-        print cmd
+        self.__logger.info(cmd)
         #translate cmd into bytes
         cmdB = chr(cmd[0])
         i = 1
@@ -75,17 +83,13 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['Play'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
+
         return True
         
     #######################################
@@ -95,17 +99,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['Pause'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True    
 
     #######################################
@@ -115,17 +114,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['PlayNext'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True
 
     #######################################
@@ -135,17 +129,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['PlayAbove'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True
                 
     #######################################
@@ -155,17 +144,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['Sleep'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True   
         
     #######################################
@@ -175,17 +159,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['Sleep'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.' , len, len(cmd))
                return False
-               
-        ser.close()
+
         return True
         
     #######################################
@@ -195,17 +174,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['Reset'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
-        ser.close()
+
         return True
 
     #######################################
@@ -215,17 +189,12 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_ctrlDict['StopPlay'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
-        ser.close()
+
         return True
                 
     #######################################
@@ -236,22 +205,17 @@ class Speaker(object):
         list = [0x4]
         list.append(self.__cmd_ctrlDict['SetVolume'])
         if(value > 30 or value < 0):
-                  print 'Error Paramter: volume should be 0 ~ 30, %d' % value
+                  self.__logger.info('Error Paramter: volume should be 0 ~ 30, %d', value)
                   return -1
         list.append(value)
         
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
-        ser.close()
+
         return True
         
     #######################################
@@ -262,22 +226,17 @@ class Speaker(object):
         list = [0x4]
         list.append(self.__cmd_ctrlDict['SetEQ'])
         if(value > 5 or value < 0):
-                  print 'Error Paramter: EQ should be 0 ~ 5, %d' % value
+                  self.__logger.info('Error Paramter: EQ should be 0 ~ 5, %d', value)
                   return -1
         list.append(value)
         
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True
 
     #######################################
@@ -288,22 +247,18 @@ class Speaker(object):
         list = [0x4]
         list.append(self.__cmd_ctrlDict['SetPlayMode'])
         if(value > 4 or value < 0):
-                  print 'Error Paramter: play mode should be 0 ~ 4, %d' % value
+                  self.__logger.info('Error Paramter: play mode should be 0 ~ 4, %d', value)
                   return -1
         list.append(value)
         
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
+
         return True
         
     #######################################
@@ -314,7 +269,7 @@ class Speaker(object):
         list = [0x5]
         list.append(self.__cmd_ctrlDict['ChooseMusic'])
         if(value > 255 or value < 1):
-                  print 'Error Paramter: musci number should be 1 ~ 255, %d' % value
+                  self.__logger.info('Error Paramter: musci number should be 1 ~ 255, %d', value)
                   return -1
         vh = value >> 8
         vl = value & 0xff
@@ -322,17 +277,12 @@ class Speaker(object):
         list.append(vl)
         
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
-        ser.close()
         return True
         
     #######################################
@@ -343,23 +293,18 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_reqDict['PlayStat'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-        ack = ser.read(self.__ackLen)
-        print ack
+        ack = self.__ser.read(self.__ackLen)
+        self.__logger.info(ack)
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
         value = string.aoti(valueStr, 16) 
-                 
-        ser.close()
+
         return value
 
     #######################################
@@ -369,23 +314,18 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_reqDict['Volume'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-        ack = ser.read(self.__ackLen)
-        print ack
+        ack = self.__ser.read(self.__ackLen)
+        self.__logger.info(ack)
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
         value = string.aoti(valueStr, 16) 
                  
-        ser.close()
         return value      
 
     #######################################
@@ -396,23 +336,18 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_reqDict['PlayDev'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-        ack = ser.read(self.__ackLen)
-        print ack
+        ack = self.__ser.read(self.__ackLen)
+        self.__logger.info(ack)
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
         value = string.aoti(valueStr, 16) 
                  
-        ser.close()
         return value                
 
     #######################################
@@ -423,23 +358,18 @@ class Speaker(object):
         list = [0x3]
         list.append(self.__cmd_reqDict['MusicInFlash'])
         cmd = self.__makeCommand(list)
-        ser = serial.Serial('/dev/ttyS2', 9600, timeout=0.5)
-        
-        if not ser.isOpen():
-               print 'Serial /dev/ttyS2 could not be opened.'
-               return False
-        length = ser.write(cmd)
+
+        length = self.__ser.write(cmd)
         if length != len(cmd):
-               print 'write %d - %d /dev/ttyS2 failed.' % (len, len(cmd))
+               self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-        ack = ser.read(self.__ackLen)
-        print ack
+        ack = self.__ser.read(self.__ackLen)
+        self.__logger.info(ack)
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
         value = string.aoti(valueStr, 16) 
                  
-        ser.close()
         return value        
         
         

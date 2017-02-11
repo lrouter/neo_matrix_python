@@ -8,12 +8,18 @@ __author__ = 'kaixi fan'
 import os
 import sys
 import time
+import matrix_logger as mlog
 
 class Adxl34x(object):
     #private data
     __positon = 0.0
 
     def __init__(self):
+        #Creat logger
+        self.__logger = mlog.MatrixLogger("Adxl34x.log")
+        
+        #loading driver
+        self.__logger.info("loadding driver")
         os.system('modprobe adxl34x')
         os.system('modprobe adxl34x-i2c')
         self.__postion = 0.0
@@ -28,16 +34,16 @@ class Adxl34x(object):
                     found = True
                     break;
             if not found:
-                print 'error: adxl34x position not found' % channel
+                self.__logger.info("error, adxl34x position not found.")
                 return -1
         except OSError, e:
-            print e
+            self.__logger.info("error, OSError.")
             return -1
 
         try:
             fd = open(position, 'r')
         except IOError, e:
-            print 'error: fail to open %s' % position
+            self.__logger.info("error: fail to open position")
             return -1
         else:
             __postion = fd.read()

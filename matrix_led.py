@@ -8,6 +8,7 @@ __author__ = 'kaixi fan'
 import os
 import sys
 import time
+import matrix_logger as mlog
 
 #class Led
 #       ledname:
@@ -24,6 +25,12 @@ class Led(object):
     __status =  'off'
 
     def __init__(self, led_name):
+        # Creat log
+        self.__logger = mlog.MatrixLogger("Led.log")
+        
+        # Creat led inode
+        self.__logger.info("Creat led inode in file system")
+        self.__logger.info("Led name should be: %s, %s, %s", "led_upload", "led_usrcfg_0", "led_usrcfg_1")
         led_dir = '/sys/class/gpio'
         if led_name == 'led_upload':
             self.__led_name = led_name
@@ -35,14 +42,14 @@ class Led(object):
             self.__led_name = led_name
             self.__led_dir = os.path.join(led_dir, 'gpio67')
         else:
-            print 'unknown led name %s' % led_name
+            self.__logger.info("unknown led name %s", led_name)
             return -1
 
         self.__led_dirt_dir = os.path.join(self.__led_dir, 'direction')
         self.__led_val_dir = os.path.join(self.__led_dir, 'value')
-	
-	print self.__led_dirt_dir
-	print self.__led_val_dir
+
+        self.__logger.info("led direction inode : %s", self.__led_dirt_dir)
+        self.__logger.info("led value inode : %s", self.__led_val_dir)        
 
     #set led on
     def set_on(self):
@@ -75,6 +82,7 @@ class Led(object):
             fd = open(self.__led_val_dir)
         except IOError,e:
             print 'error: fail to open %s' % self.__led_val_dir
+            self.__logger.info("error: fail to open %s", self.__led_val_dir)
             return -1
         else:
             self.__status = fd.read()

@@ -6,3 +6,4 @@ from matrix_speaker import Speaker
 from matrix_usrwifi import UsrWifi
 from matrix_net import Net
 from matrix_netmonitor import NetMonitor
+from matrix_logger import MatrixLogger

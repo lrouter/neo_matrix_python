@@ -7,21 +7,44 @@ import time
 import serial
 import logging
 import re
-import matrix_usrwifi as muw
-import matrix_net as mnt
-import matrix_logger as mlog
+import neo_matrix_python as ma
 
 class NetMonitor:
     def __init__(self): 
+        #######################################################################################
+        #设置logger
+        #######################################################################################
+        # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger
+        os.system('rm *.log')
+	self.__logger = logging.getLogger('mylogger')
+        self.__logger.setLevel(logging.DEBUG)
+
         # 创建一个handler，用于写入日志文件
-        self.__logger =  mlog.MatrixLogger('NetMonitor.log')
-       
+        fh = logging.FileHandler('NetMonitor.log')
+        fh.setLevel(logging.DEBUG)
+
+        # 再创建一个handler，用于输出到控制台
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+
+        # 定义handler的输出格式
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+
+        # 给logger添加handler
+        self.__logger.addHandler(fh)
+        self.__logger.addHandler(ch)
+
+        # 记录一条日志
+        self.__logger.info('first message.')
+        
         #######################################################################################
         #设置USR WIFI 模块处于TCP服务器模式,STA,保存为默认参数
         #######################################################################################
         self.__logger.info("设置USR WIFI 模块处于TCP服务器模式")
-        self.__uwifi = muw.UsrWifi()
+        self.__uwifi = ma.UsrWifi()
         self.__uwifi.init()
         time.sleep(0.5) #wait for 0.5 second
 
@@ -32,7 +55,7 @@ class NetMonitor:
         while True:
               #获取LAN和WAN的连接状态
               self.__logger.info('获取LAN和WAN的连接状态')
-              net = mnt.Net()
+              net = ma.Net()
               lanstat = net.isLanLink()
               wanstat = net.isWanLink()
               self.__logger.info('lanstat = %d', lanstat)

@@ -40,7 +40,7 @@ class UsrWifi:
         self.__ser.write('+')
         time.sleep(0.4)
         value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from +++:\r\n%s' , value)
+        self.__logger.info('ack from +++:\r\n%s', value)
         if cmp(value, 'a') != 0:
             self.exitAt()
             return False
@@ -49,7 +49,7 @@ class UsrWifi:
         self.__ser.write('a')
         time.sleep(0.2)
         value = self.__ser.read(self.__ackLen)
-        self.__logger.info('ack from a:\r\n%s' , value)
+        self.__logger.info('ack from a:\r\n%s', value)
 
         if value.find('OK') != -1:
             return True

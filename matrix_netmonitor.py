@@ -11,32 +11,12 @@ import neo_matrix_python as ma
 
 class NetMonitor:
     def __init__(self): 
-        #######################################################################################
-        #设置logger
-        #######################################################################################
-        # 通过下面的方式进行简单配置输出方式与日志级别
-        # 创建一个logger
-        os.system('rm *.log')
-	self.__logger = logging.getLogger('mylogger')
-        self.__logger.setLevel(logging.DEBUG)
-
-        # 创建一个handler，用于写入日志文件
-        fh = logging.FileHandler('NetMonitor.log')
-        fh.setLevel(logging.DEBUG)
-
-        # 再创建一个handler，用于输出到控制台
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
-
-        # 定义handler的输出格式
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
-
-        # 给logger添加handler
-        self.__logger.addHandler(fh)
-        self.__logger.addHandler(ch)
-
+        # Creat log
+        self.__logger = ma.MatrixLogger("NetMonitor.log")
+        
+        # Creat led inode
+        self.__logger.info("Creat led inode in file system")
+        
         # 记录一条日志
         self.__logger.info('first message.')
         

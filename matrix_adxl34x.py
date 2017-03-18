@@ -46,6 +46,6 @@ class Adxl34x(object):
             self.__logger.info("error: fail to open position")
             return -1
         else:
-            __postion = fd.read()
+            __postion = fd.readline()
             fd.close()
             return __postion       

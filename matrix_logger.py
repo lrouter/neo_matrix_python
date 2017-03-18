@@ -24,7 +24,7 @@ class MatrixLogger(object):
         self.__logger.setLevel(logging.DEBUG)
 
         # 创建一个handler，用于写入日志文件
-        logfile = "~/matrixlog/" + name
+        logfile = "matrixlog/" + name
         fh = logging.FileHandler(logfile)
         fh.setLevel(logging.DEBUG)
 

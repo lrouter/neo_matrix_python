@@ -105,17 +105,9 @@ class NetMonitor:
               
               #使板载wifi重新连接
               self.__logger.info('使板载wifi重新连接')
-              os.system("kill `ps -e|grep dhclient|awk '{print $1}'`")
-              time.sleep(2)
-              os.system("kill `ps -e|grep dhclient|awk '{print $1}'`")
-              time.sleep(2)
               os.system("ifdown wlan0")
-              time.sleep(2)
               os.system("ifup wlan0")
-              
-              
-              
-
+              time.sleep(1)
       
       
       

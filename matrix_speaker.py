@@ -283,6 +283,11 @@ class Speaker(object):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
+        #获取播放状态，直到设备播放停止
+        stat = self.getPlayStat()
+        while(stat == 1):
+               stat = self.getPlayStat()                          
+               
         return True
         
     #######################################

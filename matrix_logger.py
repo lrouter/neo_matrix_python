@@ -29,17 +29,17 @@ class MatrixLogger(object):
         fh.setLevel(logging.DEBUG)
 
         # 再创建一个handler，用于输出到控制台
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
+        #ch = logging.StreamHandler()
+        #ch.setLevel(logging.DEBUG)
 
         # 定义handler的输出格式
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
         fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
+        #ch.setFormatter(formatter)
 
         # 给logger添加handler
         self.__logger.addHandler(fh)
-        self.__logger.addHandler(ch)
+        #self.__logger.addHandler(ch)
 
         # 记录一条日志
         self.__logger.info('first message.')

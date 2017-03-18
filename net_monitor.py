@@ -17,7 +17,7 @@ class NetMonitor:
         # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger
         os.system('rm *.log')
-	self.__logger = logging.getLogger('mylogger')
+		self.__logger = logging.getLogger('mylogger')
         self.__logger.setLevel(logging.DEBUG)
 
         # 创建一个handler，用于写入日志文件

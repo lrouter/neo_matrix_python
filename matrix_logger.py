@@ -16,7 +16,7 @@ class MatrixLogger(object):
     def __init__(self, name):
         #删除log文件
         os.system('rm -rf ~/matrixlog')
-	os.system('mkdir ~/matrixlog')
+		os.system('mkdir ~/matrixlog')
         
         # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger
@@ -29,17 +29,17 @@ class MatrixLogger(object):
         fh.setLevel(logging.DEBUG)
 
         # 再创建一个handler，用于输出到控制台
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
+        #ch = logging.StreamHandler()
+        #ch.setLevel(logging.DEBUG)
 
         # 定义handler的输出格式
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
         fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
+        #ch.setFormatter(formatter)
 
         # 给logger添加handler
         self.__logger.addHandler(fh)
-        self.__logger.addHandler(ch)
+        #self.__logger.addHandler(ch)
 
         # 记录一条日志
         self.__logger.info('first message.')

@@ -16,7 +16,7 @@ class MatrixLogger(object):
     def __init__(self, name):
         #删除log文件
         os.system('rm -rf ~/matrixlog')
-		os.system('mkdir ~/matrixlog')
+	os.system('mkdir ~/matrixlog')
         
         # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger

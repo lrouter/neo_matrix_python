@@ -85,7 +85,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -102,7 +102,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -118,7 +118,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -134,7 +134,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -150,7 +150,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -166,7 +166,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.' , len, len(cmd))
                return False
@@ -182,7 +182,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -198,7 +198,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -220,7 +220,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -242,7 +242,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -264,7 +264,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -290,7 +290,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -312,7 +312,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -334,7 +334,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -357,7 +357,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -380,7 +380,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	delay(0.1)
+	    delay(0.1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False

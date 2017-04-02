@@ -14,7 +14,9 @@ import matrix_logger as mlog
 
 class Speaker(object):
     #private data
-    __ackLen = 20
+    __wackLen = 2 #write command ack length, ok
+    __ackLen = 20 #read command ack length
+
     __cmd_ctrlDict = {'Play':       0x1, \
                      'Pause':       0x2, \
                      'PlayNext':    0x3, \
@@ -52,6 +54,7 @@ class Speaker(object):
                self.__logger.info('self.__serial /dev/ttyS2 could not be opened.')
                return False
 
+
     #######################################
     ##    Make command
     #######################################
@@ -67,7 +70,7 @@ class Speaker(object):
             cmd.append(item)
         cmd.append(cksum)
         cmd.append(0xef)
-        
+
         self.__logger.info(cmd)
         #translate cmd into bytes
         cmdB = chr(cmd[0])
@@ -75,7 +78,7 @@ class Speaker(object):
         while i < len(cmd):
             cmdB += chr(cmd[i])
             i+=1
-            
+
         return cmdB
     #######################################
     ##    Play music
@@ -86,12 +89,12 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen)                                      
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
+
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen)                                      
 
         return True
         
@@ -104,12 +107,13 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
+
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
+
         return True    
 
     #######################################
@@ -121,12 +125,13 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
+        
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
+
         return True
 
     #######################################
@@ -138,11 +143,11 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
                
         return True
                 
@@ -155,11 +160,11 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
                
         return True   
         
@@ -172,11 +177,11 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.' , len, len(cmd))
                return False
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
 
         return True
         
@@ -189,11 +194,11 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
 
         return True
 
@@ -206,11 +211,11 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
 
         return True
                 
@@ -229,11 +234,12 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
 
         return True
         
@@ -252,12 +258,13 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-               
+        
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
+
         return True
 
     #######################################
@@ -275,12 +282,12 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
                
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
 
         return True
         
@@ -302,15 +309,16 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
-        ack = self.__ser.read(self.__ackLen) 
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
+
+        time.sleep(1)
+        ack = self.__ser.read(self.__wackLen) 
                
         #获取播放状态，直到设备播放停止
         stat = self.getPlayStat()
-	while(stat != 0):
+        while(stat != 0):
                stat = self.getPlayStat()                          
                
         return True
@@ -325,28 +333,26 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
+        time.sleep(1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
-        ack = self.__ser.read(2)
+        time.sleep(1)
         ack = self.__ser.read(self.__ackLen)
         self.__logger.info(ack)
-        if ack.find('OK') == -1:
-           return False
-	print ack
+        print ack
         if ack.find('OK0000') != -1:
-		return 0
-	elif ack.find('OK0001') != -1:
-		return 1
-	elif ack.find('OK0002') != -1:
-		return 2
-	elif ack.find('OK0003') != -1:
-		return 3
-	elif ack.find('OK0004') != -1:
-		return 4
-	else:
-		return 5
+                return 0
+        elif ack.find('OK0001') != -1:
+                return 1
+        elif ack.find('OK0002') != -1:
+                return 2
+        elif ack.find('OK0003') != -1:
+                return 3
+        elif ack.find('OK0004') != -1:
+                return 4
+        else:
+                return 5
 
     #######################################
     ##    get play volume
@@ -357,7 +363,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
+        time.sleep(1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -366,7 +372,7 @@ class Speaker(object):
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
-        value = string.aoti(valueStr, 16) 
+        value = string.atoi(valueStr, 16) 
                  
         return value      
 
@@ -380,7 +386,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
+        time.sleep(1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -389,7 +395,7 @@ class Speaker(object):
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
-        value = string.aoti(valueStr, 16) 
+        value = string.atoi(valueStr, 16) 
                  
         return value                
 
@@ -403,7 +409,7 @@ class Speaker(object):
         cmd = self.__makeCommand(list)
 
         length = self.__ser.write(cmd)
-	time.sleep(1)
+        time.sleep(1)
         if length != len(cmd):
                self.__logger.info('write %d - %d /dev/ttyS2 failed.', len, len(cmd))
                return False
@@ -412,7 +418,7 @@ class Speaker(object):
         if ack.find('OK') == -1:
            return False
         valueStr = '0x' + ack[2:]
-        value = string.aoti(valueStr, 16) 
+        value = string.atoi(valueStr, 16) 
                  
         return value        
         

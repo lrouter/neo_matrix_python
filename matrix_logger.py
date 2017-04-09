@@ -15,9 +15,14 @@ class MatrixLogger(object):
 
     def __init__(self, name):
         #删除log文件
-        os.system('rm -rf ~/matrixlog')
-	os.system('mkdir ~/matrixlog')
-        
+        neopath = os.path.abspath('.')
+        log_neopath = os.path.join(neopath, 'matrixlog')
+        if os.path.exists(log_neopath):
+            cmd = 'rm -rf ' + log_neopath
+            os.system(cmd)
+        cmd = 'mkdir ' + log_neopath
+        os.system(cmd)
+
         # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger
         self.__logger = logging.getLogger('mylogger')

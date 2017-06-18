@@ -22,15 +22,13 @@ class Led(object):
     #   __led_name: led name
     #   __led_status: led status, on or off
     __led_name = 'led_upload'
-    __status =  'off'
+    __status = 'off'
 
     def __init__(self, led_name):
         # Creat log
-        self.__logger = mlog.MatrixLogger("Led.log")
+        self.__logger = mlog.MatrixLogger("Led")
         
         # Creat led inode
-        self.__logger.info("Creat led inode in file system")
-        self.__logger.info("Led name should be: %s, %s, %s", "led_upload", "led_usrcfg_0", "led_usrcfg_1")
         led_dir = '/sys/class/gpio'
         if led_name == 'led_upload':
             self.__led_name = led_name
@@ -42,16 +40,13 @@ class Led(object):
             self.__led_name = led_name
             self.__led_dir = os.path.join(led_dir, 'gpio67')
         else:
-            self.__logger.info("unknown led name %s", led_name)
+            self.__logger.warn("unknown led name %s", led_name)
             return -1
 
         self.__led_dirt_dir = os.path.join(self.__led_dir, 'direction')
         self.__led_val_dir = os.path.join(self.__led_dir, 'value')
 
-        self.__logger.info("led direction inode : %s", self.__led_dirt_dir)
-        self.__logger.info("led value inode : %s", self.__led_val_dir)        
-
-    #set led on
+    # set led on
     def set_on(self):
         cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
         os.system(cmdstr)
@@ -65,7 +60,7 @@ class Led(object):
         
         return 0
 
-    #set led off
+    # set led off
     def set_off(self):
         cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
         os.system(cmdstr)
@@ -78,7 +73,7 @@ class Led(object):
 
         return 0
 
-    #get led status
+    # get led status
     def get_status(self):        
         cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
         os.system(cmdstr)
@@ -87,7 +82,7 @@ class Led(object):
             fd = open(self.__led_val_dir)
         except IOError,e:
             print 'error: fail to open %s' % self.__led_val_dir
-            self.__logger.info("error: fail to open %s", self.__led_val_dir)
+            self.__logger.error("error: fail to open %s", self.__led_val_dir)
             return -1
         else:
             self.__status = fd.read()

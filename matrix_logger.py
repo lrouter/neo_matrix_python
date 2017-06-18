@@ -3,51 +3,55 @@
 
 ' an led module '
 
-__author__ = 'kaixi fan'
-
 import os
 import sys
 import time
 import logging
-import os
+from logging.handlers import TimedRotatingFileHandler
+
 
 class MatrixLogger(object):
 
     def __init__(self, name):
-        #删除log文件
-        neopath = os.path.abspath('.')
-        log_neopath = os.path.join(neopath, 'matrixlog')
-        if os.path.exists(log_neopath):
-            cmd = 'rm -rf ' + log_neopath
-            os.system(cmd)
-        cmd = 'mkdir ' + log_neopath
-        os.system(cmd)
+        log_file_path = './log/matrix/'
+        if os.path.isdir(log_file_path):
+            pass
+        else:
+            os.makedirs(log_file_path)
 
         # 通过下面的方式进行简单配置输出方式与日志级别
         # 创建一个logger
         self.__logger = logging.getLogger('mylogger')
         self.__logger.setLevel(logging.DEBUG)
 
-        # 创建一个handler，用于写入日志文件
-        logfile = "matrixlog/" + name
-        fh = logging.FileHandler(logfile)
-        fh.setLevel(logging.DEBUG)
+        # 日志打印格式
+        log_fmt = '%(asctime)s\tFile \"%(filename)s\",line %(lineno)s\t%(levelname)s: %(message)s'
+        formatter = logging.Formatter(log_fmt)
 
-        # 再创建一个handler，用于输出到控制台
-        #ch = logging.StreamHandler()
-        #ch.setLevel(logging.DEBUG)
-
-        # 定义handler的输出格式
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s')
-        fh.setFormatter(formatter)
-        #ch.setFormatter(formatter)
+        # 创建TimedRotatingFileHandler对象
+        log_file_name = log_file_path + name + '.log'
+        log_file_handler = TimedRotatingFileHandler(filename=log_file_name, when="M", interval=3, backupCount=3)
+        # log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+        log_file_handler.setFormatter(formatter)
+        logging.basicConfig(level=logging.DEBUG)
 
         # 给logger添加handler
-        self.__logger.addHandler(fh)
-        #self.__logger.addHandler(ch)
+        self.__logger.addHandler(log_file_handler)
 
-        # 记录一条日志
-        self.__logger.info('first message.')
-        
-    def info(self, *args, **kwargs ):
+        # 记录第一条日志
+        self.__logger.info('第一条打印消息.')
+
+    def debug(self, *args, **kwargs):
+        self.__logger.debug(args)
+
+    def info(self, *args, **kwargs):
         self.__logger.info(args)
+
+    def warn(self, *args, **kwargs):
+        self.__logger.warn(args)
+
+    def error(self, *args, **kwargs):
+        self.__logger.error(args)
+
+    def critical(self, *args, **kwargs):
+        self.__logger.critical(args)

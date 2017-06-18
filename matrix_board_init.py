@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-' an led module '
+' an board init module '
 
 __author__ = 'kaixi fan'
 
@@ -16,13 +16,12 @@ import matrix_logger as mlog
 def board_init():
     
     # Creat logger
-    blog = mlog.MatrixLogger('board_init.log')
-    blog.info("board init")
+    self.__logger = mlog.MatrixLogger('board_init')
+    self.__logger.debug("Board init")
     
     ##
     ##creat gpio inode in sysfs filesystem
     ##
-    blog.info("creat gpio inode in sysfs filesystem")
     gpio_dir = '/sys/class/gpio'
     gpio_export_dir = os.path.join(gpio_dir, 'export')
     led_upload_dir = os.path.join(gpio_dir, 'gpio203')
@@ -34,59 +33,60 @@ def board_init():
     cmdstr = 'chmod 700 ' + gpio_export_dir
     os.system(cmdstr)
     
-    #led upload
+    # led upload
     if os.path.exists(led_upload_dir):
-       pass
+        pass
     else:
-       cmdstr = 'echo 203 > ' + gpio_export_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 203 > ' + gpio_export_dir
+        os.system(cmdstr)
        
-    #led usrcfg_0
+    # led usrcfg_0
     if os.path.exists(led_usrcfg_0_dir):
-       pass
+        pass
     else:
-       cmdstr = 'echo 66 > ' + gpio_export_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 66 > ' + gpio_export_dir
+        os.system(cmdstr)
        
-    #led usrcfg_1
+    # led usrcfg_1
     if os.path.exists(led_usrcfg_1_dir):
-       pass
+        pass
     else:
-       cmdstr = 'echo 67 > ' + gpio_export_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 67 > ' + gpio_export_dir
+        os.system(cmdstr)
        
-    #button for photo
+    # button for photo
     if os.path.exists(button_phtoto_dir):
-       pass
+        pass
     else:
-       cmdstr = 'echo 64 > ' + gpio_export_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 64 > ' + gpio_export_dir
+        os.system(cmdstr)
 
-    #button for resetting to factory state
+    # button for resetting to factory state
     if os.path.exists(button_restore_dir):
-       pass
+        pass
     else:
-       cmdstr = 'echo 65 > ' + gpio_export_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 65 > ' + gpio_export_dir
+        os.system(cmdstr)
                                   
     ##
     ##creat adxl34x inode in sysfs filesystem
     ##
     adxl34x_dir = '/sys/bus/i2c/drivers/adxl34x'
     if os.path.exists(adxl34x_dir):
-       pass
+        pass
     else:
-       os.system('modprobe adxl34x')
-       os.system('modprobe adxl34x-i2c')
-       
+        os.system('modprobe adxl34x')
+        os.system('modprobe adxl34x-i2c')
+
+
 ##############################################################
 # 				Board uninit function	
 ##############################################################
-def boad_uninit():
+def boad_uninit(self):
     
-    blog.info('board uninit')
+    self.__logger.info('board uninit')
     
-    #delet releated file inode in sysfs filesystem
+    # delet releated file inode in sysfs filesystem
     gpio_dir = '/sys/class/gpio'
     gpio_unexport_dir = os.path.join(gpio_dir, 'unexport')
     led_upload_dir = os.path.join(gpio_dir, 'gpio203')
@@ -98,37 +98,36 @@ def boad_uninit():
     cmdstr = 'chmod 700 ' + gpio_unexport_dir
     os.system(cmdstr)
     
-    #led upload
+    # led upload
     if os.path.exists(led_upload_dir):
-       cmdstr = 'echo 203 > ' + gpio_unexport_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 203 > ' + gpio_unexport_dir
+        os.system(cmdstr)
        
-    #led usrcfg_0
+    # led usrcfg_0
     if os.path.exists(led_usrcfg_0_dir):
-       cmdstr = 'echo 66 > ' + gpio_unexport_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 66 > ' + gpio_unexport_dir
+        os.system(cmdstr)
        
-    #led usrcfg_1
+    # led usrcfg_1
     if os.path.exists(led_usrcfg_1_dir):
-       cmdstr = 'echo 67 > ' + gpio_unexport_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 67 > ' + gpio_unexport_dir
+        os.system(cmdstr)
        
-    #button for photo
+    # button for photo
     if os.path.exists(button_phtoto_dir):
-       cmdstr = 'echo 64 > ' + gpio_unexport_dir
-       os.system(cmdstr)
+        cmdstr = 'echo 64 > ' + gpio_unexport_dir
+        os.system(cmdstr)
 
-    #button for resetting to factory state
+    # button for resetting to factory state
     if os.path.exists(button_restore_dir):
        cmdstr = 'echo 65 > ' + gpio_unexport_dir
        os.system(cmdstr)
 
-                                  
-    ##
-    ##delet adxl34x inode in sysfs filesystem
-    ##
+    #
+    # delet adxl34x inode in sysfs filesystem
+    #
     adxl34x_dir = '/sys/bus/i2c/drivers/adxl34x'
     if os.path.exists(adxl34x_dir):
-       os.system('modprobe -r adxl34x')
-       os.system('modprobe -r adxl34x-i2c') 
+        os.system('modprobe -r adxl34x')
+        os.system('modprobe -r adxl34x-i2c')
                             

@@ -41,7 +41,7 @@ class Button(object):
             self.__name = name
             self.__dir = os.path.join(self.__button_dir, 'gpio65')
         else:
-            self.__logger.warn("unknown button name %s", name)
+            self.__logger.error("unknown button name %s", name)
             return -1
         
         #set button gpio as input mode    

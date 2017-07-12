@@ -54,5 +54,5 @@ class NetMonitor:
             os.system(cmdstr)
             cmdstr = 'nmcli device wifi rescan'
             os.system(cmdstr)
-            cmdstr = 'nmcli dev wifi connect' + ' ' + wifi_name + ' ' + password + ' ' + wifi_passwd
+            cmdstr = 'nmcli dev wifi connect' + ' ' + wifi_name + ' ' + 'password' + ' ' + wifi_passwd
             os.system(cmdstr)

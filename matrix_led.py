@@ -68,7 +68,7 @@ class Led(object):
             cmdstr = 'echo 0 > ' + self.__led_val_dir
         else:        
             cmdstr = 'echo 1 > ' + self.__led_val_dir
-
+        os.system(cmdstr)
         self.__status = 'off'
 
         return 0

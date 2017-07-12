@@ -50,5 +50,9 @@ class NetMonitor:
                 continue
 
             # 使用解析出的wifi名称和密码，重新连接wifi
+            cmdstr = 'nmcli radio wifi on'
+            os.system(cmdstr)
+            cmdstr = 'nmcli device wifi rescan'
+            os.system(cmdstr)
             cmdstr = 'nmcli dev wifi connect' + ' ' + wifi_name + ' ' + password + ' ' + wifi_passwd
             os.system(cmdstr)

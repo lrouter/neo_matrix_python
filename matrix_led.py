@@ -48,12 +48,12 @@ class Led(object):
 
     # set led on
     def set_on(self):
-        cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
+        cmdstr = 'echo out > '+ self.__led_dirt_dir
         os.system(cmdstr)
         if self.__led_name == 'led_usrcfg_1':
-            cmdstr = 'echo \'1\' > ' + self.__led_val_dir
+            cmdstr = 'echo 1 > ' + self.__led_val_dir
         else:        
-            cmdstr = 'echo \'0\' > ' + self.__led_val_dir
+            cmdstr = 'echo 0 > ' + self.__led_val_dir
         os.system(cmdstr)
         
         self.__status = 'on'
@@ -62,12 +62,12 @@ class Led(object):
 
     # set led off
     def set_off(self):
-        cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
+        cmdstr = 'echo out > '+ self.__led_dirt_dir
         os.system(cmdstr)
         if self.__led_name == 'led_usrcfg_1':
-            cmdstr = 'echo \'0\' > ' + self.__led_val_dir
+            cmdstr = 'echo 0 > ' + self.__led_val_dir
         else:        
-            cmdstr = 'echo \'1\' > ' + self.__led_val_dir
+            cmdstr = 'echo 1 > ' + self.__led_val_dir
 
         self.__status = 'off'
 
@@ -75,7 +75,7 @@ class Led(object):
 
     # get led status
     def get_status(self):        
-        cmdstr = 'echo \'out\' > '+ self.__led_dirt_dir
+        cmdstr = 'echo out > '+ self.__led_dirt_dir
         os.system(cmdstr)
 
         try:

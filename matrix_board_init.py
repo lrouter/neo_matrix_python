@@ -11,7 +11,25 @@ import time
 import matrix_logger as mlog
 
 class BoardInit(object):
-
+		
+		#GPIOs map
+		#GPIOA - 0, GPIOB - 32
+		__gpio_map = {'led_upload': '203',
+					'led_usrcfg_0': '66',
+					'led_usrcfg_1': '67',
+					'button_phtoto': '64',
+					'button_restore': '65',
+					'gpio_a3': '3',
+					'gpio_a6': '6',
+					'gpio_a17': '17',
+					'gpio_g8': '200',
+					'gpio_g9': '201'
+					};
+		#GPIO dir			
+        __gpio_dir = '/sys/class/gpio'
+        __gpio_export_dir = '/sys/class/gpio/export'
+		__gpio_unexport_dir = '/sys/class/gpio/unexport'
+		
     ######################################################
     #   Method - __init__
     ######################################################    
@@ -26,51 +44,17 @@ class BoardInit(object):
         ##
         ##creat gpio inode in sysfs filesystem
         ##
-        gpio_dir = '/sys/class/gpio'
-        gpio_export_dir = os.path.join(gpio_dir, 'export')
-        led_upload_dir = os.path.join(gpio_dir, 'gpio203')
-        led_usrcfg_0_dir = os.path.join(gpio_dir, 'gpio66')
-        led_usrcfg_1_dir = os.path.join(gpio_dir, 'gpio67')
-        button_phtoto_dir = os.path.join(gpio_dir, 'gpio64')
-        button_restore_dir = os.path.join(gpio_dir, 'gpio65')
 
-        cmdstr = 'chmod 700 ' + gpio_export_dir
+		#export GPIO pin
+        cmdstr = 'chmod 700 ' + self.__gpio_export_dir
         os.system(cmdstr)
-
-        # led upload
-        if os.path.exists(led_upload_dir):
-            pass
-        else:
-            cmdstr = 'echo 203 > ' + gpio_export_dir
-            os.system(cmdstr)
-
-        # led usrcfg_0
-        if os.path.exists(led_usrcfg_0_dir):
-            pass
-        else:
-            cmdstr = 'echo 66 > ' + gpio_export_dir
-            os.system(cmdstr)
-
-        # led usrcfg_1
-        if os.path.exists(led_usrcfg_1_dir):
-            pass
-        else:
-            cmdstr = 'echo 67 > ' + gpio_export_dir
-            os.system(cmdstr)
-
-        # button for photo
-        if os.path.exists(button_phtoto_dir):
-            pass
-        else:
-            cmdstr = 'echo 64 > ' + gpio_export_dir
-            os.system(cmdstr)
-
-        # button for resetting to factory state
-        if os.path.exists(button_restore_dir):
-            pass
-        else:
-            cmdstr = 'echo 65 > ' + gpio_export_dir
-            os.system(cmdstr)
+		for gpio_name, gpio_number in gpio_map.items():
+			gpio_pin_dir = os.path.join(self.__gpio_dir, 'gpio' + gpio_number)
+			cmdstr = 'echo ' + gpio_number + ' > ' + self.__gpio_export_dir
+			if os.path.exists(gpio_pin_dir):
+				pass
+			else:
+				os.system(cmdstr)
 
         ##
         ##creat adxl34x inode in sysfs filesystem
@@ -91,41 +75,13 @@ class BoardInit(object):
         self.__logger.info('board uninit')
 
         # delet releated file inode in sysfs filesystem
-        gpio_dir = '/sys/class/gpio'
-        gpio_unexport_dir = os.path.join(gpio_dir, 'unexport')
-        led_upload_dir = os.path.join(gpio_dir, 'gpio203')
-        led_usrcfg_0_dir = os.path.join(gpio_dir, 'gpio66')
-        led_usrcfg_1_dir = os.path.join(gpio_dir, 'gpio67')
-        button_phtoto_dir = os.path.join(gpio_dir, 'gpio64')
-        button_restore_dir = os.path.join(gpio_dir, 'gpio65')
-
-        cmdstr = 'chmod 700 ' + gpio_unexport_dir
+        cmdstr = 'chmod 700 ' + self.__gpio_unexport_dir
         os.system(cmdstr)
-
-        # led upload
-        if os.path.exists(led_upload_dir):
-            cmdstr = 'echo 203 > ' + gpio_unexport_dir
-            os.system(cmdstr)
-
-        # led usrcfg_0
-        if os.path.exists(led_usrcfg_0_dir):
-            cmdstr = 'echo 66 > ' + gpio_unexport_dir
-            os.system(cmdstr)
-
-        # led usrcfg_1
-        if os.path.exists(led_usrcfg_1_dir):
-            cmdstr = 'echo 67 > ' + gpio_unexport_dir
-            os.system(cmdstr)
-
-        # button for photo
-        if os.path.exists(button_phtoto_dir):
-            cmdstr = 'echo 64 > ' + gpio_unexport_dir
-            os.system(cmdstr)
-
-        # button for resetting to factory state
-        if os.path.exists(button_restore_dir):
-           cmdstr = 'echo 65 > ' + gpio_unexport_dir
-           os.system(cmdstr)
+		for gpio_name, gpio_number in gpio_map.items():
+			gpio_pin_dir = os.path.join(self.__gpio_dir, 'gpio' + gpio_number)
+			cmdstr = 'echo ' + gpio_number + ' > ' + self.__gpio_unexport_dir
+			if os.path.exists(gpio_pin_dir):
+				os.system(cmdstr)
 
         #
         # delet adxl34x inode in sysfs filesystem
@@ -134,4 +90,3 @@ class BoardInit(object):
         if os.path.exists(adxl34x_dir):
             os.system('modprobe -r adxl34x')
             os.system('modprobe -r adxl34x-i2c')
-                            

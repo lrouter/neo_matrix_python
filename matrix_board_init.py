@@ -27,8 +27,13 @@ class BoardInit(object):
     #           -   gpioA3
     #           -   gpioA6
     #           -   gpioA17
+    #           -   gpioC0
+    #           -   gpioC1
+    #           -   gpioC2
+    #           -   gpioC3
     #           -   gpioG8
     #           -   gpioG9
+    #           -   gpioG11
     __gpio_map = {
                 'gpio_a2': '2',
                 'gpio_a3': '3',

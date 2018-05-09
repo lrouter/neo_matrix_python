@@ -16,6 +16,7 @@ import matrix_logger as mlog
 #       ledname:
 #           -   button_photo
 #           -   button_restore
+#           -   button_workmode
 #
 ###########################################################   
 class Button(object):
@@ -40,6 +41,9 @@ class Button(object):
         elif name == 'button_restore':
             self.__name = name
             self.__dir = os.path.join(self.__button_dir, 'gpio65')
+        elif name == 'button_workmode':
+            self.__name = name
+            self.__dir = os.path.join(self.__button_dir, 'gpio331')           
         else:
             self.__logger.error("unknown button name %s", name)
             return -1

@@ -34,6 +34,7 @@ class BoardInit(object):
     #           -   gpioG8
     #           -   gpioG9
     #           -   gpioG11
+    #           -   gpioL11
     __gpio_map = {
                 'gpio_a2': '2',
                 'gpio_a3': '3',
@@ -46,6 +47,7 @@ class BoardInit(object):
                 'gpio_g8': '200',
                 'gpio_g9': '201',
                 'gpio_g11': '203',
+                'gpio_l11': '331',
                 };
     #GPIO dir           
     __gpio_dir = '/sys/class/gpio'

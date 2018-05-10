@@ -69,7 +69,7 @@ class Button(object):
             return -1
         else:
             input = fd.read()
-            self.__logger.info("button value = %s", input)
+            #self.__logger.info("button value = %s", input)
             value = int(input)
             if value == 0:
                 fd.close()

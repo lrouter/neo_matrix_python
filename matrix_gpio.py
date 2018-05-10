@@ -54,7 +54,7 @@ class Gpio(object):
     def set_direction(self, direction):
         if direction == 'output':
             cmdstr = "echo 'out' > " + self.__gpio_direction
-        else if direction == 'input':
+        elif direction == 'input':
             cmdstr = "echo 'in' > " + self.__gpio_direction
         else:
             self.__logger.error("unknown input %s", direction)
@@ -67,7 +67,7 @@ class Gpio(object):
     def set_value(self, value):
         if value == '0':
             cmdstr = 'echo 0 > ' + self.__gpio_value 
-        else if value == '1':
+        elif value == '1':
             cmdstr = 'echo 1 > ' + self.__gpio_value
         else:
             self.__logger.error("unknown input %s", direction)

@@ -8,12 +8,12 @@ testResult="fail"
 startSecond=$(date +%s)
 while :
 do
-	file=$(find /sys/bus/i2c/drivers/adxl34x -name "position")
+	file=$(ls -al /sys/bus/i2c/drivers/adxl34x/0-001d | grep position)
 	echo "file=${file}"
 	if [ ! -n "$file" ]; then
 		echo "Error. There is no position file."
 		echo "The subdirectories of adxl34x are :"
-		ls /sys/bus/i2c/drivers/adxl34x 
+		ls -al /sys/bus/i2c/drivers/adxl34x 
 		break
 	fi
 	

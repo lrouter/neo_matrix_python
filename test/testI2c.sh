@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#modprobe adxl34x
-#modprobe adxl34x-i2c
+modprobe adxl34x
+modprobe adxl34x-i2c
 
 #test for 1 hour. If the dedicated folder is missing, return error.
 testResult="fail"

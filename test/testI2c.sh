@@ -8,7 +8,7 @@ testResult="fail"
 startSecond=$(date +%s)
 while :
 do
-	file=$(find /sys/bus/i2c/drivers/adx34x -name "postion")
+	file=$(find /sys/bus/i2c/drivers/adxl34x -name "postion")
 	if [ ! -n "$file" ]; then
 		echo "Error. There is no position file."
 		break

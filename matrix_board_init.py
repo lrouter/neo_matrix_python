@@ -69,6 +69,11 @@ class BoardInit(object):
         ##creat gpio inode in sysfs filesystem
         ##
 
+        ## reflect drivers for adxl34x
+        curdir = os.path.split(os.path.realpath(__file__))[0]
+        cmdstr = curdir + "fix_adxl34x.sh " + curdir
+        os.system(cmdstr)		
+		
         #export GPIO pin
         cmdstr = 'chmod 700 ' + self.__gpio_export_dir
         os.system(cmdstr)
